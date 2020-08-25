@@ -93,3 +93,34 @@ func (gaw *GoogleAdWords) GetCampaignName(customerId string, campaignId string) 
 		return "?", nil
 	}
 }
+
+func (gaw *GoogleAdWords) GetCampaigns(customerId string) (*[]gads.Campaign, error) {
+	err := gaw.oAuth2.ValidateToken()
+	if err != nil {
+		return nil, err
+	}
+
+	token := oauth2.Token{}
+	token.AccessToken = gaw.oAuth2.Token.AccessToken
+	token.TokenType = gaw.oAuth2.Token.TokenType
+	token.RefreshToken = gaw.oAuth2.Token.RefreshToken
+	token.Expiry = gaw.oAuth2.Token.Expiry
+
+	authConf, _ := gads.NewCredentialsFromCode(context.TODO(), customerId, gaw.DeveloperToken, "Leapforce", &token)
+
+	cs := gads.NewCampaignService(&authConf.Auth)
+
+	campaigns, _, err := cs.Get(
+		gads.Selector{
+			Fields: []string{
+				"Id",
+				"Name",
+			},
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &campaigns, nil
+}
