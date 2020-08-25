@@ -1,12 +1,14 @@
 package googleadwords
 
 import (
+	"context"
 	"fmt"
 	"net/http"
-	"strings"
 
+	"github.com/Leapforce-nl/gads"
 	bigquerytools "github.com/Leapforce-nl/go_bigquerytools"
 	types "github.com/Leapforce-nl/go_types"
+	"golang.org/x/oauth2"
 
 	googleoauth2 "github.com/Leapforce-nl/go_googleoauth2"
 )
@@ -16,18 +18,18 @@ const apiName string = "GoogleAdWords"
 // GoogleAdWords stores GoogleAdWords configuration
 //
 type GoogleAdWords struct {
-	SiteURL string
-	BaseURL string
-	oAuth2  *googleoauth2.GoogleOAuth2
+	DeveloperToken string
+	oAuth2         *googleoauth2.GoogleOAuth2
 }
 
 // methods
 //
-func (gaw *GoogleAdWords) InitOAuth2(clientID string, clientSecret string, bigQuery *bigquerytools.BigQuery, isLive bool) error {
+func (gaw *GoogleAdWords) InitOAuth2(clientID string, clientSecret string, scopes []string, bigQuery *bigquerytools.BigQuery, isLive bool) error {
 	_oAuth2 := new(googleoauth2.GoogleOAuth2)
 	_oAuth2.ApiName = apiName
 	_oAuth2.ClientID = clientID
 	_oAuth2.ClientSecret = clientSecret
+	_oAuth2.Scopes = scopes
 	_oAuth2.BigQuery = bigQuery
 	_oAuth2.IsLive = isLive
 
@@ -37,19 +39,8 @@ func (gaw *GoogleAdWords) InitOAuth2(clientID string, clientSecret string, bigQu
 }
 
 func (gaw *GoogleAdWords) Validate() error {
-	if gaw.BaseURL == "" {
-		return &types.ErrorString{fmt.Sprintf("%s BaseURL not provided", apiName)}
-	}
-	if gaw.SiteURL == "" {
-		return &types.ErrorString{fmt.Sprintf("%s SiteURL not provided", apiName)}
-	}
-
-	if !strings.HasSuffix(gaw.BaseURL, "/") {
-		gaw.BaseURL = gaw.BaseURL + "/"
-	}
-
-	if !strings.HasSuffix(gaw.SiteURL, "/") {
-		gaw.SiteURL = gaw.SiteURL + "/"
+	if gaw.DeveloperToken == "" {
+		return &types.ErrorString{fmt.Sprintf("%s DeveloperToken not provided", apiName)}
 	}
 
 	return nil
@@ -63,4 +54,42 @@ func (gaw *GoogleAdWords) GetHttpClient() (*http.Client, error) {
 	}
 
 	return new(http.Client), nil
+}
+
+func (gaw *GoogleAdWords) GetCampaignName(customerId string, campaignId string) (string, error) {
+	err := gaw.oAuth2.ValidateToken()
+	if err != nil {
+		return "", err
+	}
+
+	token := oauth2.Token{}
+	token.AccessToken = gaw.oAuth2.Token.AccessToken
+	token.TokenType = gaw.oAuth2.Token.TokenType
+	token.RefreshToken = gaw.oAuth2.Token.RefreshToken
+	token.Expiry = gaw.oAuth2.Token.Expiry
+
+	authConf, _ := gads.NewCredentialsFromCode(context.TODO(), customerId, gaw.DeveloperToken, "Leapforce", &token)
+
+	cs := gads.NewCampaignService(&authConf.Auth)
+
+	campaigns, _, err := cs.Get(
+		gads.Selector{
+			Fields: []string{
+				"Id",
+				"Name",
+			},
+			Predicates: []gads.Predicate{
+				{"Id", "EQUALS", []string{campaignId}},
+			},
+		},
+	)
+	if err != nil {
+		return "?", err
+	}
+
+	if len(campaigns) > 0 {
+		return campaigns[0].Name, nil
+	} else {
+		return "?", nil
+	}
 }

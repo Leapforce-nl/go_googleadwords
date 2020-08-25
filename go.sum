@@ -40,11 +40,17 @@ github.com/CloudyKit/fastprinter v0.0.0-20170127035650-74b38d55f37a/go.mod h1:EF
 github.com/CloudyKit/jet v2.1.3-0.20180809161101-62edd43e4f88+incompatible/go.mod h1:HPYO+50pSWkPoj9Q/eq0aRGByCL6ScRlUmiEX5Zgm+w=
 github.com/Joker/hpp v1.0.0/go.mod h1:8x5n+M1Hp5hC0g8okX3sR3vFQwynaX/UgSOM9MeBKzY=
 github.com/Joker/jade v1.0.1-0.20190614124447-d475f43051e7/go.mod h1:6E6s8o2AE4KhCrqr6GRJjdC/gNfTdxkIXvuGZZda2VM=
+github.com/Leapforce-nl/gads v0.0.0-20150908144551-f352bbde8eaa h1:su24QR0gqIrHofKaAhiXro5xviloJhmF01t83MenS7c=
+github.com/Leapforce-nl/gads v0.0.0-20150908144551-f352bbde8eaa/go.mod h1:GvzUQpCmf/0lORrVV8+GygjSskcyDiaH4iD44MuAkJk=
+github.com/Leapforce-nl/gads v0.0.0-20200825164558-fad2c3cf6dcc h1:20Wz/BAs8f9kNhJ04jRJT0+zhweND6fZ2u37yGrTyEE=
+github.com/Leapforce-nl/gads v0.0.0-20200825164558-fad2c3cf6dcc/go.mod h1:Sgp1uHmi7kmvlKOU+9HQJaMIsHxtUifDQskyPryEccE=
 github.com/Leapforce-nl/go_bigquerytools v0.0.0-20200710213042-75144903d632 h1:1yDkurdiWg6AguqTRWPRQOl2GhG1zB4TJh9ZM4mgo9o=
 github.com/Leapforce-nl/go_bigquerytools v0.0.0-20200710213042-75144903d632/go.mod h1:TQI3OkAtylNvDNxLwTDuF+mqrRt69YdpoOH/farM2n0=
 github.com/Leapforce-nl/go_errortools v0.0.0-20200218173102-e74ff3d10089/go.mod h1:goG+xW3RRxvv/HpoxmaTFMdH+a/YeiZseoGzL9RwBAE=
 github.com/Leapforce-nl/go_googleoauth2 v0.0.0-20200824235305-3d83aae17eed h1:NiW03/ZudffEtuvEcRiQfSYZjsQvxsn23upvfDlgGhc=
 github.com/Leapforce-nl/go_googleoauth2 v0.0.0-20200824235305-3d83aae17eed/go.mod h1:JB8GnpjVoFVIdB//iS12cQvMoSYusEnFXhrA2CReeEk=
+github.com/Leapforce-nl/go_googleoauth2 v0.0.0-20200825104104-ab29528c17b7 h1:J/iIG68jy5eefxQ3hNz5hZvW2ArokYXBSqg6sYOzFMg=
+github.com/Leapforce-nl/go_googleoauth2 v0.0.0-20200825104104-ab29528c17b7/go.mod h1:JB8GnpjVoFVIdB//iS12cQvMoSYusEnFXhrA2CReeEk=
 github.com/Leapforce-nl/go_types v0.0.0-20200126202922-ba4900de15b8 h1:q0/mdn+TnZqBB439lOeuLPHPnQaVYCQL2B4BRLbCbuQ=
 github.com/Leapforce-nl/go_types v0.0.0-20200126202922-ba4900de15b8/go.mod h1:AuUJ0pyk3Xc6IgEuzCr5NvEl277YQwiIgJ12/SfmByI=
 github.com/Shopify/goreferrer v0.0.0-20181106222321-ec9c9a553398/go.mod h1:a1uqRtAwp2Xwc6WNPJEufxJ7fx3npB4UV/JOLmbu5I0=
@@ -69,6 +75,8 @@ github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZm
 github.com/dgryski/go-farm v0.0.0-20190423205320-6a90982ecee2/go.mod h1:SqUrOPUnsFjfmXRMNPybcSiG0BgUW2AuFH8PAnS2iTw=
 github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/eknkc/amber v0.0.0-20171010120322-cdade1c07385/go.mod h1:0vRUJqYpeSZifjYj7uP3BG/gKcuzL9xWVV/Y+cK33KM=
+github.com/emiddleton/gads v0.0.0-20150908144551-f352bbde8eaa h1:+oBHKvSgMrKK36P4gtnI593lUoM8vuXm+srqq6uuVmk=
+github.com/emiddleton/gads v0.0.0-20150908144551-f352bbde8eaa/go.mod h1:i7A1V+QDetWXOu9DsxRKLGNbcWvQAAeb/LhsIbpbXmg=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.4/go.mod h1:6rpuAdCZL397s3pYoYcLgu1mIlRU8Am5FuJP05cCM98=
@@ -221,6 +229,7 @@ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
+github.com/toqueteos/webbrowser v1.2.0/go.mod h1:XWoZq4cyp9WeUeak7w7LXRUQf1F1ATJMir8RTqb4ayM=
 github.com/ugorji/go v1.1.4/go.mod h1:uQMGLiO92mf5W77hV/PUCpI3pbzQx3CRekS0kk+RGrc=
 github.com/ugorji/go v1.1.7/go.mod h1:kZn38zHttfInRq0xu/PH0az30d+z6vm202qpg1oXVMw=
 github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
@@ -314,6 +323,8 @@ golang.org/x/net v0.0.0-20200520182314-0ba52f642ac2/go.mod h1:qpuaurCH72eLCgpAm/
 golang.org/x/net v0.0.0-20200625001655-4c5254603344/go.mod h1:/O7V0waA8r7cgGh81Ro3o1hOxt32SMVPicZroKQ2sZA=
 golang.org/x/net v0.0.0-20200707034311-ab3426394381 h1:VXak5I6aEWmAXeQjA+QSZzlgNrpq9mjcfDemuexIKsU=
 golang.org/x/net v0.0.0-20200707034311-ab3426394381/go.mod h1:/O7V0waA8r7cgGh81Ro3o1hOxt32SMVPicZroKQ2sZA=
+golang.org/x/net v0.0.0-20200822124328-c89045814202 h1:VvcQYSHwXgi7W+TpUR6A9g6Up98WAHf3f/ulnJ62IyA=
+golang.org/x/net v0.0.0-20200822124328-c89045814202/go.mod h1:/O7V0waA8r7cgGh81Ro3o1hOxt32SMVPicZroKQ2sZA=
 golang.org/x/oauth2 v0.0.0-20180821212333-d2e6202438be/go.mod h1:N/0e6XlmueqKjAGxoOufVs8QHGRruUQn6yWY3a++T0U=
 golang.org/x/oauth2 v0.0.0-20190226205417-e64efc72b421/go.mod h1:gOpvHmFTYa4IltrdGE7lF6nIHvwfUNPOp7c8zoXwtLw=
 golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45/go.mod h1:gOpvHmFTYa4IltrdGE7lF6nIHvwfUNPOp7c8zoXwtLw=
