@@ -48,7 +48,6 @@ func NewGoogleAdWords(developerToken string, clientID string, clientSecret strin
 	}
 	gaw.oAuth2 = go_oauth2.NewOAuth(config, bigQuery, isLive)
 	return &gaw, nil
-
 }
 
 func (gaw *GoogleAdWords) Validate() error {
