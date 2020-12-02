@@ -5,39 +5,48 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Leapforce-nl/gads"
-	bigquerytools "github.com/Leapforce-nl/go_bigquerytools"
-	types "github.com/Leapforce-nl/go_types"
+	"github.com/leapforce-libraries/gads"
+	bigquerytools "github.com/leapforce-libraries/go_bigquerytools"
+	errortools "github.com/leapforce-libraries/go_errortools"
+	types "github.com/leapforce-libraries/go_types"
 	"golang.org/x/oauth2"
 
-	googleoauth2 "github.com/Leapforce-nl/go_googleoauth2"
+	go_oauth2 "github.com/leapforce-libraries/go_oauth2"
 )
 
-const apiName string = "GoogleAdWords"
+const (
+	apiName string = "GoogleAdWords"
+	//apiURL          string = "https://www.googleapis.com/calendar/v3"
+	authURL         string = "https://accounts.google.com/o/oauth2/v2/auth"
+	tokenURL        string = "https://oauth2.googleapis.com/token"
+	tokenHTTPMethod string = http.MethodPost
+	redirectURL     string = "http://localhost:8080/oauth/redirect"
+)
 
 // GoogleAdWords stores GoogleAdWords configuration
 //
 type GoogleAdWords struct {
 	developerToken string
-	oAuth2         *googleoauth2.GoogleOAuth2
+	oAuth2         *go_oauth2.OAuth2
 }
 
 // methods
 //
-func NewGoogleAdWords(developerToken string, clientID string, clientSecret string, scopes []string, bigQuery *bigquerytools.BigQuery, isLive bool) (*GoogleAdWords, error) {
+func NewGoogleAdWords(developerToken string, clientID string, clientSecret string, scope string, bigQuery *bigquerytools.BigQuery, isLive bool) (*GoogleAdWords, *errortools.Error) {
 	gaw := GoogleAdWords{}
 	gaw.developerToken = developerToken
 
-	_oAuth2 := new(googleoauth2.GoogleOAuth2)
-	_oAuth2.ApiName = apiName
-	_oAuth2.ClientID = clientID
-	_oAuth2.ClientSecret = clientSecret
-	_oAuth2.Scopes = scopes
-	_oAuth2.BigQuery = bigQuery
-	_oAuth2.IsLive = isLive
-
-	gaw.oAuth2 = _oAuth2
-
+	config := go_oauth2.OAuth2Config{
+		ApiName:         apiName,
+		ClientID:        clientID,
+		ClientSecret:    clientSecret,
+		Scope:           scope,
+		RedirectURL:     redirectURL,
+		AuthURL:         authURL,
+		TokenURL:        tokenURL,
+		TokenHTTPMethod: tokenHTTPMethod,
+	}
+	gaw.oAuth2 = go_oauth2.NewOAuth(config, bigQuery, isLive)
 	return &gaw, nil
 
 }
@@ -50,27 +59,26 @@ func (gaw *GoogleAdWords) Validate() error {
 	return nil
 }
 
-func (gaw *GoogleAdWords) GetHttpClient() (*http.Client, error) {
-
-	err := gaw.oAuth2.ValidateToken()
-	if err != nil {
-		return nil, err
+func (gaw *GoogleAdWords) GetHttpClient() (*http.Client, *errortools.Error) {
+	_, e := gaw.oAuth2.ValidateToken()
+	if e != nil {
+		return nil, e
 	}
 
 	return new(http.Client), nil
 }
 
-func (gaw *GoogleAdWords) GetCampaignName(customerId string, campaignId string) (string, error) {
-	err := gaw.oAuth2.ValidateToken()
-	if err != nil {
-		return "", err
+func (gaw *GoogleAdWords) GetCampaignName(customerId string, campaignId string) (string, *errortools.Error) {
+	t, e := gaw.oAuth2.ValidateToken()
+	if e != nil {
+		return "", e
 	}
 
 	token := oauth2.Token{}
-	token.AccessToken = gaw.oAuth2.Token.AccessToken
-	token.TokenType = gaw.oAuth2.Token.TokenType
-	token.RefreshToken = gaw.oAuth2.Token.RefreshToken
-	token.Expiry = gaw.oAuth2.Token.Expiry
+	token.AccessToken = *t.AccessToken
+	token.TokenType = *t.TokenType
+	token.RefreshToken = *t.RefreshToken
+	token.Expiry = *t.Expiry
 
 	authConf, _ := gads.NewCredentialsFromCode(context.TODO(), customerId, gaw.developerToken, "Leapforce", &token)
 
@@ -88,7 +96,7 @@ func (gaw *GoogleAdWords) GetCampaignName(customerId string, campaignId string) 
 		},
 	)
 	if err != nil {
-		return "?", err
+		return "?", errortools.ErrorMessage(err)
 	}
 
 	if len(campaigns) > 0 {
@@ -98,17 +106,17 @@ func (gaw *GoogleAdWords) GetCampaignName(customerId string, campaignId string) 
 	}
 }
 
-func (gaw *GoogleAdWords) GetCampaigns(customerId string) (*[]gads.Campaign, error) {
-	err := gaw.oAuth2.ValidateToken()
-	if err != nil {
-		return nil, err
+func (gaw *GoogleAdWords) GetCampaigns(customerId string) (*[]gads.Campaign, *errortools.Error) {
+	t, e := gaw.oAuth2.ValidateToken()
+	if e != nil {
+		return nil, e
 	}
 
 	token := oauth2.Token{}
-	token.AccessToken = gaw.oAuth2.Token.AccessToken
-	token.TokenType = gaw.oAuth2.Token.TokenType
-	token.RefreshToken = gaw.oAuth2.Token.RefreshToken
-	token.Expiry = gaw.oAuth2.Token.Expiry
+	token.AccessToken = *t.AccessToken
+	token.TokenType = *t.TokenType
+	token.RefreshToken = *t.RefreshToken
+	token.Expiry = *t.Expiry
 
 	authConf, _ := gads.NewCredentialsFromCode(context.TODO(), customerId, gaw.developerToken, "Leapforce", &token)
 
@@ -123,7 +131,7 @@ func (gaw *GoogleAdWords) GetCampaigns(customerId string) (*[]gads.Campaign, err
 		},
 	)
 	if err != nil {
-		return nil, err
+		return nil, errortools.ErrorMessage(err)
 	}
 
 	return &campaigns, nil
