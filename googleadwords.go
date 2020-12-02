@@ -8,7 +8,6 @@ import (
 	"github.com/leapforce-libraries/gads"
 	bigquerytools "github.com/leapforce-libraries/go_bigquerytools"
 	errortools "github.com/leapforce-libraries/go_errortools"
-	types "github.com/leapforce-libraries/go_types"
 	"golang.org/x/oauth2"
 
 	go_oauth2 "github.com/leapforce-libraries/go_oauth2"
@@ -50,9 +49,9 @@ func NewGoogleAdWords(developerToken string, clientID string, clientSecret strin
 	return &gaw, nil
 }
 
-func (gaw *GoogleAdWords) Validate() error {
+func (gaw *GoogleAdWords) Validate() *errortools.Error {
 	if gaw.developerToken == "" {
-		return &types.ErrorString{fmt.Sprintf("%s developerToken not provided", apiName)}
+		return errortools.ErrorMessage(fmt.Sprintf("%s developerToken not provided", apiName))
 	}
 
 	return nil
