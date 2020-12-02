@@ -1,4 +1,4 @@
-module github.com/Leapforce-nl/go_googleadwords
+module github.com/leapforce-libraries/go_googleadwords
 
 go 1.13
 
