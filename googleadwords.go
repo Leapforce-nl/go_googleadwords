@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/leapforce-libraries/gads"
-	bigquerytools "github.com/leapforce-libraries/go_bigquerytools"
 	errortools "github.com/leapforce-libraries/go_errortools"
+	google "github.com/leapforce-libraries/go_google"
 	"golang.org/x/oauth2"
 
 	go_oauth2 "github.com/leapforce-libraries/go_oauth2"
@@ -31,21 +31,30 @@ type GoogleAdWords struct {
 
 // methods
 //
-func NewGoogleAdWords(developerToken string, clientID string, clientSecret string, scope string, bigQuery *bigquerytools.BigQuery) (*GoogleAdWords, *errortools.Error) {
+func NewGoogleAdWords(developerToken string, clientID string, clientSecret string, scope string, bigQuery *google.BigQuery) (*GoogleAdWords, *errortools.Error) {
+	getTokenFunction := func() (*go_oauth2.Token, *errortools.Error) {
+		return google.GetToken(apiName, clientID, bigQuery)
+	}
+
+	saveTokenFunction := func(token *go_oauth2.Token) *errortools.Error {
+		return google.SaveToken(apiName, clientID, token, bigQuery)
+	}
+
 	gaw := GoogleAdWords{}
 	gaw.developerToken = developerToken
 
 	config := go_oauth2.OAuth2Config{
-		ApiName:         apiName,
-		ClientID:        clientID,
-		ClientSecret:    clientSecret,
-		Scope:           scope,
-		RedirectURL:     redirectURL,
-		AuthURL:         authURL,
-		TokenURL:        tokenURL,
-		TokenHTTPMethod: tokenHTTPMethod,
+		ClientID:          clientID,
+		ClientSecret:      clientSecret,
+		Scope:             scope,
+		RedirectURL:       redirectURL,
+		AuthURL:           authURL,
+		TokenURL:          tokenURL,
+		TokenHTTPMethod:   tokenHTTPMethod,
+		GetTokenFunction:  &getTokenFunction,
+		SaveTokenFunction: &saveTokenFunction,
 	}
-	gaw.oAuth2 = go_oauth2.NewOAuth(config, bigQuery)
+	gaw.oAuth2 = go_oauth2.NewOAuth(config)
 	return &gaw, nil
 }
 
