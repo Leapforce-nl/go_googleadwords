@@ -31,7 +31,7 @@ type GoogleAdWords struct {
 
 // methods
 //
-func NewGoogleAdWords(developerToken string, clientID string, clientSecret string, scope string, bigQuery *google.BigQuery) (*GoogleAdWords, *errortools.Error) {
+func NewGoogleAdWords(developerToken string, clientID string, clientSecret string, scope string, bigQuery *google.BigQuery) *GoogleAdWords {
 	getTokenFunction := func() (*go_oauth2.Token, *errortools.Error) {
 		return google.GetToken(apiName, clientID, bigQuery)
 	}
@@ -55,7 +55,7 @@ func NewGoogleAdWords(developerToken string, clientID string, clientSecret strin
 		SaveTokenFunction: &saveTokenFunction,
 	}
 	gaw.oAuth2 = go_oauth2.NewOAuth(config)
-	return &gaw, nil
+	return &gaw
 }
 
 func (gaw *GoogleAdWords) Validate() *errortools.Error {
