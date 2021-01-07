@@ -58,6 +58,10 @@ func NewGoogleAdWords(developerToken string, clientID string, clientSecret strin
 	return &gaw
 }
 
+func (gaw *GoogleAdWords) InitToken() *errortools.Error {
+	return gaw.oAuth2.InitToken()
+}
+
 func (gaw *GoogleAdWords) Validate() *errortools.Error {
 	if gaw.developerToken == "" {
 		return errortools.ErrorMessage(fmt.Sprintf("%s developerToken not provided", apiName))
